@@ -15,7 +15,7 @@ async function bootstrap() {
   app.use(
     cors({
       origin: [process.env.FRONTEND_URL || 'http://localhost:3000'],
-      credentials:true
+      credentials: true,
     }),
   );
   app.use(morgan('combined'));
@@ -28,7 +28,7 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.setGlobalPrefix('api/v1');
 
@@ -36,10 +36,10 @@ async function bootstrap() {
     .setTitle('Event Management')
     .setDescription('its even managment system ')
     .setVersion('1.0')
-
+   
     .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  const documentFactory = () => SwaggerModule.createDocument(app, config,{ignoreGlobalPrefix:true});
   SwaggerModule.setup('api', app, documentFactory);
   const PORT = process.env.PORT;
   await app.listen(PORT ?? 3000);

@@ -8,6 +8,7 @@ import { UserRepository } from 'src/repositories/user.repo';
 @Module({
   providers: [
     DatabaseService,
+    UserRepository,
     {
       provide: DataSource,
       useValue:AppDataSource
