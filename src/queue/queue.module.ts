@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
-import { EmailProcessor } from './email/email.processor/email.processor';
+import { EmailProcessor } from './email/email.processor';
 import { MailModule } from 'src/mail/mail.module';
+import { EmailQueueService } from './email/email-queue.service';
 @Module({
   imports: [
     MailModule,
@@ -15,7 +16,7 @@ import { MailModule } from 'src/mail/mail.module';
       name: 'email',
     }),
   ],
-  exports: [BullModule],
-  providers: [EmailProcessor],
+  exports: [EmailQueueService],
+  providers: [EmailProcessor, EmailQueueService],
 })
 export class QueueModule {}

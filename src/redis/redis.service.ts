@@ -18,11 +18,11 @@ export class RedisService implements OnModuleInit, OnApplicationShutdown {
   }
   async onApplicationShutdown() {
     if (this.redis.status === 'ready') {
-      await this.redis.quit;
+      await this.redis.quit();
     }
-    this.logger.log('Redis connection closed');
+    this.logger.error('Redis connection closed');
   }
-  getClient() {
+  getClient(): Redis {
     return this.redis;
   }
 }
