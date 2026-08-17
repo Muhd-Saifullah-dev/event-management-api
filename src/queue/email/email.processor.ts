@@ -1,11 +1,15 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
+import { MailService } from 'src/mail/mail.service';
+import { sendOtpTemplate } from 'src/mail/templates/otp-template';
 
 @Processor('email')
 export class EmailProcessor extends WorkerHost {
   private readonly logger = new Logger(EmailProcessor.name);
-
+  constructor(private readonly mailService: MailService) {
+    super();
+  }
   onModuleInit() {
     this.logger.log('Email BullMQ worker started');
   }
@@ -23,13 +27,13 @@ export class EmailProcessor extends WorkerHost {
         break;
 
       default:
-        console.log(`Unknown job: ${job.name}`);
+        this.logger.log(`Unknown job: ${job.name}`);
     }
   }
 
-  private async sendOtpEmail(data: { email: string; otp: string }) {
+  private async sendOtpEmail(data: { email: string; otp: string,name:string }) {
     this.logger.log(`Sending OTP ${data.otp} to ${data.email}`);
-
+    await this.mailService.send_email({toEmail:data.email,subject:'Verify Your Email',html:sendOtpTemplate(data.otp,data.name)})
     // yahan actual email sending hogi
   }
 
