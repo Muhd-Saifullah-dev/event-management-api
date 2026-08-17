@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
+import { EmailProcessor } from './email/email.processor/email.processor';
+import { MailModule } from 'src/mail/mail.module';
 @Module({
   imports: [
+    MailModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST,
@@ -12,6 +15,7 @@ import { BullModule } from '@nestjs/bullmq';
       name: 'email',
     }),
   ],
-  exports:[BullModule]
+  exports: [BullModule],
+  providers: [EmailProcessor],
 })
 export class QueueModule {}

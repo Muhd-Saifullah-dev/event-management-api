@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { RedisModule } from './redis/redis.module';
 import { AuthModule } from './auth/auth.module';
 import { QueueModule } from './queue/queue.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { QueueModule } from './queue/queue.module';
     RedisModule,
     AuthModule,
     QueueModule,
+    MailModule,
   ],
 
   providers: [
