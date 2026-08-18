@@ -1,5 +1,5 @@
-export const sendOtpTemplate = (
-  otp: string,
+export const resetPasswordTemplate = (
+  resetUrl: string,
   name?: string,
 ): string => {
   return `
@@ -8,7 +8,7 @@ export const sendOtpTemplate = (
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Your OTP Code</title>
+        <title>Reset Your Password</title>
       </head>
 
       <body
@@ -72,7 +72,7 @@ export const sendOtpTemplate = (
                         font-size: 14px;
                       "
                     >
-                      Secure account verification
+                      Secure account recovery
                     </p>
                   </td>
                 </tr>
@@ -89,7 +89,7 @@ export const sendOtpTemplate = (
                         color: #0f172a;
                       "
                     >
-                      Verify your email
+                      Reset your password
                     </h2>
 
                     <p
@@ -111,11 +111,12 @@ export const sendOtpTemplate = (
                         color: #64748b;
                       "
                     >
-                      Use the verification code below to continue.
-                      This code will expire in <strong>1 minutes</strong>.
+                      We received a request to reset the password for your
+                      YourApp account. Click the button below to create a new
+                      password.
                     </p>
 
-                    <!-- OTP Box -->
+                    <!-- Reset Button -->
                     <table
                       width="100%"
                       cellpadding="0"
@@ -124,26 +125,21 @@ export const sendOtpTemplate = (
                     >
                       <tr>
                         <td align="center">
-                          <div
+                          <a
+                            href="${resetUrl}"
                             style="
                               display: inline-block;
-                              background-color: #eef2ff;
-                              border: 1px solid #c7d2fe;
-                              border-radius: 12px;
-                              padding: 18px 32px;
+                              background-color: #6366f1;
+                              color: #ffffff;
+                              text-decoration: none;
+                              font-size: 15px;
+                              font-weight: 700;
+                              padding: 14px 28px;
+                              border-radius: 10px;
                             "
                           >
-                            <span
-                              style="
-                                color: #4f46e5;
-                                font-size: 32px;
-                                font-weight: 700;
-                                letter-spacing: 8px;
-                              "
-                            >
-                              ${otp}
-                            </span>
-                          </div>
+                            Reset Password
+                          </a>
                         </td>
                       </tr>
                     </table>
@@ -157,8 +153,34 @@ export const sendOtpTemplate = (
                         color: #94a3b8;
                       "
                     >
-                      Please do not share this code with anyone.
+                      This link will expire in <strong>10 minutes</strong>.
                     </p>
+
+                    <!-- Security Notice -->
+                    <div
+                      style="
+                        background-color: #f8fafc;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 10px;
+                        padding: 14px 16px;
+                        margin-top: 24px;
+                      "
+                    >
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 13px;
+                          line-height: 1.6;
+                          color: #64748b;
+                        "
+                      >
+                        <strong style="color: #475569;">
+                          Security reminder:
+                        </strong>
+                        If you didn't request a password reset, you can safely
+                        ignore this email.
+                      </p>
+                    </div>
 
                     <!-- Divider -->
                     <div
@@ -177,8 +199,27 @@ export const sendOtpTemplate = (
                         color: #94a3b8;
                       "
                     >
-                      If you didn't request this verification code, you can
-                      safely ignore this email. Your account remains secure.
+                      If the button above doesn't work, copy and paste the
+                      following link into your browser:
+                    </p>
+
+                    <p
+                      style="
+                        margin: 10px 0 0;
+                        font-size: 12px;
+                        line-height: 1.5;
+                        word-break: break-all;
+                      "
+                    >
+                      <a
+                        href="${resetUrl}"
+                        style="
+                          color: #6366f1;
+                          text-decoration: none;
+                        "
+                      >
+                        ${resetUrl}
+                      </a>
                     </p>
 
                   </td>

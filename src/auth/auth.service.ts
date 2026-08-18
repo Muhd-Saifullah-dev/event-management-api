@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -18,6 +19,7 @@ import { ResendOtpDto } from 'src/dto/resend-otp.dto';
 import { LoginDto } from 'src/dto/login.dto';
 import * as crypto from 'crypto';
 import { ForgotPasswordDto } from 'src/dto/froget-password.dto';
+import { ResetPasswordDto } from 'src/dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -116,37 +118,79 @@ export class AuthService {
     return successResponse('login successfully', { user, accessToken });
   }
 
-  async forgetPassword(dto:ForgotPasswordDto) {
-     const user = await this.userRepo.findByEmail(dto.email);
+  async forgetPassword(dto: ForgotPasswordDto) {
+    const user = await this.userRepo.findByEmail(dto.email);
 
-  // User exist kare ya na kare,
-  // same response dena better hai.
-  if (!user) {
+    // User exist kare ya na kare,
+    // same response dena better hai.
+    if (!user) {
+      return successResponse(
+        'If the email exists, a password reset link has been sent',
+        null,
+      );
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    await this.redisService
+      .getClient()
+      .set(
+        RedisKey.passwordReset(user.email),
+        resetToken,
+        'EX',
+        RedisTTL.PASSWORD_RESET,
+      );
+
+    await this.emailQueueService.sendForgotPassword(
+      user.email,
+      resetToken,
+      user.name,
+    );
+
     return successResponse(
-      'If the email exists, a password reset link has been sent',
+      'password reset link has been sent',
       null,
     );
   }
+  async resetPassword(dto: ResetPasswordDto) {
+  const redis = this.redisService.getClient();
 
-  const resetToken = crypto.randomBytes(32).toString('hex');
+  const storedToken = await redis.get(
+    RedisKey.passwordReset(dto.email),
+  );
 
-  await this.redisService
-    .getClient()
-    .set(
-      RedisKey.passwordReset(user.email),
-      resetToken,
-      'EX',
-      RedisTTL.PASSWORD_RESET,
+  if (!storedToken || storedToken !== dto.token) {
+    throw new BadRequestException(
+      'Invalid or expired reset link',
     );
+  }
 
-  await this.emailQueueService.sendForgotPassword(
-    user.email,
-    resetToken,
+  const user = await this.userRepo.findByEmail(dto.email);
+
+  if (!user) {
+    throw new BadRequestException(
+      'Invalid or expired reset link',
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    dto.newPassword,
+    12,
+  );
+
+  await this.userRepo.updatePassword(
+    user.id,
+    hashedPassword,
+  );
+
+  // Token ko invalidate karo
+  await redis.del(
+    RedisKey.passwordReset(dto.email),
   );
 
   return successResponse(
-    'If the email exists, a password reset link has been sent',
+    'Password reset successfully',
     null,
   );
-  }
+}
 }

@@ -7,6 +7,7 @@ import cors from 'cors';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
+import { ResponseInterceptor } from './common/interceptors/response/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -29,7 +30,7 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new HttpExceptionFilter());
-
+  app.useGlobalInterceptors(new ResponseInterceptor)
   app.setGlobalPrefix('api/v1');
 
   const config = new DocumentBuilder()
@@ -39,7 +40,7 @@ async function bootstrap() {
    
     .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config,{ignoreGlobalPrefix:true});
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
   const PORT = process.env.PORT;
   await app.listen(PORT ?? 3000);
