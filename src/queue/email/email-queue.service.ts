@@ -29,12 +29,13 @@ export class EmailQueueService {
     );
   }
 
-  async sendForgotPassword(email: string, resetToken: string) {
+  async sendForgotPassword(email: string, resetToken: string,name:string) {
     await this.emailQueue.add(
       'forgot-password',
       {
         email,
         resetToken,
+        name
       },
       {
         attempts: 3,

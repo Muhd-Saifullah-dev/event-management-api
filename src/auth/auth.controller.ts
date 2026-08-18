@@ -6,6 +6,8 @@ import { VerifyOtpDto } from 'src/dto/verify-otp.dto';
 import { ResendOtpDto } from 'src/dto/resend-otp.dto';
 import { LoginDto } from 'src/dto/login.dto';
 import { ForgotPasswordDto } from 'src/dto/froget-password.dto';
+import { ResetPasswordDto } from 'src/dto/reset-password.dto';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -47,10 +49,23 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
+  @Throttle({
+    default: {
+      limit: 2,
+      ttl: 20 * 60 * 1000,
+    },
+  })
   @Post('forget-password')
-  @ApiOperation({summary:"user forget password"})
+  @ApiOperation({ summary: 'user forget password' })
   @HttpCode(HttpStatus.OK)
-  async forgetPassword(@Body() dto:ForgotPasswordDto){
-    return this.authService.forgetPassword(dto)
+  async forgetPassword(@Body() dto: ForgotPasswordDto) {
+    return this.authService.forgetPassword(dto);
+  }
+
+  @Post('reset-password')
+  @ApiOperation({ summary: 'user reset password' })
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
   }
 }

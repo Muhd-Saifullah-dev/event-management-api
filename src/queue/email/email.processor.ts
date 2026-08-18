@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { MailService } from 'src/mail/mail.service';
 import { sendOtpTemplate } from 'src/mail/templates/otp-template';
+import { resetPasswordTemplate } from 'src/mail/templates/reset-password-link.template';
 
 @Processor('email')
 export class EmailProcessor extends WorkerHost {
@@ -31,18 +32,30 @@ export class EmailProcessor extends WorkerHost {
     }
   }
 
-  private async sendOtpEmail(data: { email: string; otp: string,name:string }) {
+  private async sendOtpEmail(data: {
+    email: string;
+    otp: string;
+    name: string;
+  }) {
     this.logger.log(`Sending OTP ${data.otp} to ${data.email}`);
-    await this.mailService.send_email({toEmail:data.email,subject:'Verify Your Email',html:sendOtpTemplate(data.otp,data.name)})
-    // yahan actual email sending hogi
+    await this.mailService.send_email({
+      toEmail: data.email,
+      subject: 'Verify Your Email',
+      html: sendOtpTemplate(data.otp, data.name),
+    });
   }
 
   private async sendForgotPasswordEmail(data: {
     email: string;
     resetToken: string;
+    name: string;
   }) {
     this.logger.log(`Sending reset email to ${data.email}`);
-
-    // yahan actual email sending hogi
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?email=${data.email}&token=${data.resetToken}`;
+    await this.mailService.send_email({
+      toEmail: data.email,
+      subject: 'Reset Your Password',
+      html: resetPasswordTemplate(resetUrl, data.name),
+    });
   }
 }

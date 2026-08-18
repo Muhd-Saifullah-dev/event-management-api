@@ -24,6 +24,8 @@ export class ResponseInterceptor implements NestInterceptor {
         );
 
         let data = response_data.data || response_data;
+
+        console.log("data in interceptor",data)
         if (data.user?.password) {
           const { password, ...rest } = data.user;
           data = {
