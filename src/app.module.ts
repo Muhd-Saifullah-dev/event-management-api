@@ -8,6 +8,8 @@ import { RedisModule } from './redis/redis.module';
 import { AuthModule } from './auth/auth.module';
 import { QueueModule } from './queue/queue.module';
 import { MailModule } from './mail/mail.module';
+import { UserModule } from './user/user.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     QueueModule,
     MailModule,
+    UserModule,
+    CloudinaryModule,
   ],
 
   providers: [

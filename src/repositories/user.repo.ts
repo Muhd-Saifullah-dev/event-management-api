@@ -35,7 +35,10 @@ export class UserRepository {
     return this.repository.update({ id }, { isVerified: true });
   }
 
-  async updatePassword(id:number,password:string){
-    return this.repository.update({id},{password})
+  async updatePassword(id: number, password: string) {
+    return this.repository.update({ id }, { password });
+  }
+  async updateUserName(userId: number, name: string) {
+    return this.repository.update({ id: userId }, { name });
   }
 }
