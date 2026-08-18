@@ -30,14 +30,22 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new ResponseInterceptor)
+  app.useGlobalInterceptors(new ResponseInterceptor());
   app.setGlobalPrefix('api/v1');
 
   const config = new DocumentBuilder()
     .setTitle('Event Management')
     .setDescription('its even managment system ')
     .setVersion('1.0')
-   
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        description: 'Enter JWT access token',
+      },
+      'access-token',
+    )
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
