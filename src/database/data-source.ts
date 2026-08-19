@@ -14,7 +14,7 @@ const AppDataSource = new DataSource({
 
   database: process.env.DB_NAME,
 
-  entities: [User,Venue],
+  entities: [User, Venue],
 
   migrations: ['src/database/migrations/*.ts'],
 

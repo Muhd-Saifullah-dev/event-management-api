@@ -24,7 +24,7 @@ import { VenueService } from './venue.service';
 @UseGuards(AuthGuard, RoleGuard)
 @Roles('admin', 'organizer')
 export class VenueController {
-  constructor(private readonly venueService:VenueService){}
+  constructor(private readonly venueService: VenueService) {}
 
   @Get('get-all')
   async getAllVenues() {}
@@ -36,7 +36,7 @@ export class VenueController {
     @UploadedFile(FileSizeValidationPipe) file: Express.Multer.File | undefined,
     @Req() request: Request,
   ) {
-    const userId=request.user?.id
+    const userId = request.user?.id;
     return;
   }
 }

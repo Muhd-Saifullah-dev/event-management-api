@@ -10,10 +10,7 @@ import { QueueModule } from 'src/queue/queue.module';
 @Module({
   controllers: [AuthController],
 
-  providers: [
-    AuthService,
-    JwtTokenService,
-  ],
+  providers: [AuthService, JwtTokenService],
 
   imports: [
     RedisModule,

@@ -8,7 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [UserModule,AuthModule,CloudinaryModule],
+  imports: [UserModule, AuthModule, CloudinaryModule],
   controllers: [VenueController],
   providers: [VenueService],
 })
