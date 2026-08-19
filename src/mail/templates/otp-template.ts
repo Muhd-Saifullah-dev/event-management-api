@@ -1,7 +1,4 @@
-export const sendOtpTemplate = (
-  otp: string,
-  name?: string,
-): string => {
+export const sendOtpTemplate = (otp: string, name?: string): string => {
   return `
     <!DOCTYPE html>
     <html lang="en">

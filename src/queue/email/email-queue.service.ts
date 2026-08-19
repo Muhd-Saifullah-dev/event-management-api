@@ -9,7 +9,7 @@ export class EmailQueueService {
     private readonly emailQueue: Queue,
   ) {}
 
-  async sendOtp(email: string, otp: string,name:string) {
+  async sendOtp(email: string, otp: string, name: string) {
     await this.emailQueue.add(
       'send-otp',
       {
@@ -29,13 +29,13 @@ export class EmailQueueService {
     );
   }
 
-  async sendForgotPassword(email: string, resetToken: string,name:string) {
+  async sendForgotPassword(email: string, resetToken: string, name: string) {
     await this.emailQueue.add(
       'forgot-password',
       {
         email,
         resetToken,
-        name
+        name,
       },
       {
         attempts: 3,

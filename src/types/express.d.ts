@@ -1,4 +1,3 @@
-import { JwtPayload } from 'jsonwebtoken';
 import { User } from 'src/entities/user.entity';
 
 declare global {

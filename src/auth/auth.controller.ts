@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from 'src/dto/register.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { VerifyOtpDto } from 'src/dto/verify-otp.dto';
 import { ResendOtpDto } from 'src/dto/resend-otp.dto';
 import { LoginDto } from 'src/dto/login.dto';

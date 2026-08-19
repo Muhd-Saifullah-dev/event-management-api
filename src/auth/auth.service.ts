@@ -74,7 +74,7 @@ export class AuthService {
     await this.userRepo.updateIsVerified(user.id);
     await redis.del(RedisKey.otp(user.email));
 
-    const accessToken = await this.jwtTokenService.generateToken(user.id);
+    const accessToken = this.jwtTokenService.generateToken(user.id);
     return successResponse('user loggin successfulty', { user, accessToken });
   }
 
@@ -147,50 +147,30 @@ export class AuthService {
       user.name,
     );
 
-    return successResponse(
-      'password reset link has been sent',
-      null,
-    );
+    return successResponse('password reset link has been sent', null);
   }
   async resetPassword(dto: ResetPasswordDto) {
-  const redis = this.redisService.getClient();
+    const redis = this.redisService.getClient();
 
-  const storedToken = await redis.get(
-    RedisKey.passwordReset(dto.email),
-  );
+    const storedToken = await redis.get(RedisKey.passwordReset(dto.email));
 
-  if (!storedToken || storedToken !== dto.token) {
-    throw new BadRequestException(
-      'Invalid or expired reset link',
-    );
+    if (!storedToken || storedToken !== dto.token) {
+      throw new BadRequestException('Invalid or expired reset link');
+    }
+
+    const user = await this.userRepo.findByEmail(dto.email);
+
+    if (!user) {
+      throw new BadRequestException('Invalid or expired reset link');
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.newPassword, 12);
+
+    await this.userRepo.updatePassword(user.id, hashedPassword);
+
+    // Token ko invalidate karo
+    await redis.del(RedisKey.passwordReset(dto.email));
+
+    return successResponse('Password reset successfully', null);
   }
-
-  const user = await this.userRepo.findByEmail(dto.email);
-
-  if (!user) {
-    throw new BadRequestException(
-      'Invalid or expired reset link',
-    );
-  }
-
-  const hashedPassword = await bcrypt.hash(
-    dto.newPassword,
-    12,
-  );
-
-  await this.userRepo.updatePassword(
-    user.id,
-    hashedPassword,
-  );
-
-  // Token ko invalidate karo
-  await redis.del(
-    RedisKey.passwordReset(dto.email),
-  );
-
-  return successResponse(
-    'Password reset successfully',
-    null,
-  );
-}
 }

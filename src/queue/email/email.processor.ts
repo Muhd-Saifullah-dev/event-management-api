@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { Injectable, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { MailService } from 'src/mail/mail.service';
 import { sendOtpTemplate } from 'src/mail/templates/otp-template';

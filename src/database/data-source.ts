@@ -1,9 +1,8 @@
-
 import { User } from '../entities/user.entity';
 import { DataSource } from 'typeorm';
-import 'dotenv/config'
+import 'dotenv/config';
 
- const AppDataSource = new DataSource({
+const AppDataSource = new DataSource({
   type: 'mysql',
 
   host: process.env.DB_HOST,
