@@ -25,6 +25,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { FileSizeValidationPipe } from 'src/common/pipes/file-size-validation/file-size-validation.pipe';
 import { UpdateProfileDto } from 'src/dto/update-profile.dto';
+import { ChangePasswordDto } from 'src/dto/change-password.dto';
 
 @ApiTags('User')
 @ApiBearerAuth('access-token')
@@ -73,13 +74,23 @@ export class UserController {
   }
 
   @Patch('profile')
-   @ApiOperation({
+  @ApiOperation({
     summary: 'change user name only',
   })
   @HttpCode(HttpStatus.OK)
-  async changeUsername(@Body() dto:UpdateProfileDto,@Req() request:Request){
-    return this.userService.changeUserName(request.user!.id,
-    dto)
+  async changeUsername(@Body() dto: UpdateProfileDto, @Req() request: Request) {
+    return this.userService.changeUserName(request.user!.id, dto);
   }
-  
+
+  @Patch('change-password')
+  @ApiOperation({
+    summary: 'change user password',
+  })
+  @HttpCode(HttpStatus.OK)
+  async changePassword(
+    @Body() dto: ChangePasswordDto,
+    @Req() request: Request,
+  ) {
+    return this.userService.changePassword(dto, request.user!);
+  }
 }
