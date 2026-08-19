@@ -6,8 +6,8 @@ import {
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 import { successResponse } from 'src/common/http/response.util';
-import { ChangePasswordDto } from 'src/dto/change-password.dto';
-import { UpdateProfileDto } from 'src/dto/update-profile.dto';
+import { ChangePasswordDto } from 'src/dto/auth/change-password.dto';
+import { UpdateProfileDto } from 'src/dto/auth/update-profile.dto';
 import { User } from 'src/entities/user.entity';
 import { UserRepository } from 'src/repositories/user.repo';
 import * as bcrypt from 'bcrypt';

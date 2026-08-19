@@ -10,6 +10,7 @@ import { QueueModule } from './queue/queue.module';
 import { MailModule } from './mail/mail.module';
 import { UserModule } from './user/user.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { VenueModule } from './venue/venue.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     MailModule,
     UserModule,
     CloudinaryModule,
+    VenueModule,
   ],
 
   providers: [

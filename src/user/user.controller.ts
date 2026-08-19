@@ -24,8 +24,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { FileSizeValidationPipe } from 'src/common/pipes/file-size-validation/file-size-validation.pipe';
-import { UpdateProfileDto } from 'src/dto/update-profile.dto';
-import { ChangePasswordDto } from 'src/dto/change-password.dto';
+import { UpdateProfileDto } from 'src/dto/auth/update-profile.dto';
+import { ChangePasswordDto } from 'src/dto/auth/change-password.dto';
 
 @ApiTags('User')
 @ApiBearerAuth('access-token')

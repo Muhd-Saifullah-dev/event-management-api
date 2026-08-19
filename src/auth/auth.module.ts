@@ -9,15 +9,22 @@ import { QueueModule } from 'src/queue/queue.module';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, JwtTokenService],
+
+  providers: [
+    AuthService,
+    JwtTokenService,
+  ],
+
   imports: [
     RedisModule,
     QueueModule,
     DatabaseModule,
+
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET,
     }),
   ],
+
   exports: [JwtTokenService],
 })
 export class AuthModule {}
