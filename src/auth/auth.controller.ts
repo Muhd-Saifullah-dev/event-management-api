@@ -1,12 +1,12 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterUserDto } from 'src/dto/register.dto';
+import { RegisterUserDto } from 'src/dto/auth/register.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { VerifyOtpDto } from 'src/dto/verify-otp.dto';
-import { ResendOtpDto } from 'src/dto/resend-otp.dto';
-import { LoginDto } from 'src/dto/login.dto';
-import { ForgotPasswordDto } from 'src/dto/froget-password.dto';
-import { ResetPasswordDto } from 'src/dto/reset-password.dto';
+import { VerifyOtpDto } from 'src/dto/auth/verify-otp.dto';
+import { ResendOtpDto } from 'src/dto/auth/resend-otp.dto';
+import { LoginDto } from 'src/dto/auth/login.dto';
+import { ForgotPasswordDto } from 'src/dto/auth/froget-password.dto';
+import { ResetPasswordDto } from 'src/dto/auth/reset-password.dto';
 import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Auth')

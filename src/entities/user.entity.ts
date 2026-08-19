@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Venue } from './venue.entity';
 
 @Entity('users')
 export class User {
@@ -24,6 +26,8 @@ export class User {
   @Column({ nullable: true })
   imageUrl: string;
 
+  @OneToMany(() => Venue, (venue) => venue.organizer)
+  venues: Venue[];
   @Column({ default: false })
   isVerified: boolean;
   @CreateDateColumn()

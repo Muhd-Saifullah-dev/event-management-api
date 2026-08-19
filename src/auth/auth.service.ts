@@ -5,7 +5,7 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { RegisterUserDto } from 'src/dto/register.dto';
+import { RegisterUserDto } from 'src/dto/auth/register.dto';
 import { UserRepository } from 'src/repositories/user.repo';
 import { JwtTokenService } from 'src/services/jwt-token.service';
 import * as bcrypt from 'bcrypt';
@@ -14,12 +14,12 @@ import { RedisKey, RedisTTL } from 'src/contants/redis-key';
 import { generateOtp } from 'src/common/helper/otp.helper';
 import { EmailQueueService } from 'src/queue/email/email-queue.service';
 import { successResponse } from 'src/common/http/response.util';
-import { VerifyOtpDto } from 'src/dto/verify-otp.dto';
-import { ResendOtpDto } from 'src/dto/resend-otp.dto';
-import { LoginDto } from 'src/dto/login.dto';
+import { VerifyOtpDto } from 'src/dto/auth/verify-otp.dto';
+import { ResendOtpDto } from 'src/dto/auth/resend-otp.dto';
+import { LoginDto } from 'src/dto/auth/login.dto';
 import * as crypto from 'crypto';
-import { ForgotPasswordDto } from 'src/dto/froget-password.dto';
-import { ResetPasswordDto } from 'src/dto/reset-password.dto';
+import { ForgotPasswordDto } from 'src/dto/auth/froget-password.dto';
+import { ResetPasswordDto } from 'src/dto/auth/reset-password.dto';
 
 @Injectable()
 export class AuthService {
