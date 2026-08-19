@@ -1,11 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 import { successResponse } from 'src/common/http/response.util';
+import { ChangePasswordDto } from 'src/dto/change-password.dto';
 import { UpdateProfileDto } from 'src/dto/update-profile.dto';
 import { User } from 'src/entities/user.entity';
 import { UserRepository } from 'src/repositories/user.repo';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(
@@ -23,28 +28,32 @@ export class UserService {
     });
   }
 
-  async changeUserName(userId:number,dto:UpdateProfileDto){
-     const user = await this.userRepo.findById(userId);
+  async changeUserName(userId: number, dto: UpdateProfileDto) {
+    const user = await this.userRepo.findById(userId);
 
-  if (!user) {
-    throw new NotFoundException('User not found');
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.userRepo.updateUserName(userId, dto.name);
+
+    return successResponse('Username updated successfully', null);
   }
 
-  await this.userRepo.updateUserName(
-    userId,
-    dto.name,
-  );
+  async changePassword(dto: ChangePasswordDto, user: User) {
+    const matchPassword = await bcrypt.compare(
+      dto.currentPassword,
+      user.password,
+    );
 
-  return successResponse(
-    'Username updated successfully',
-    null,
-  );
+    if (!matchPassword) {
+      throw new UnauthorizedException('Current password is incorrect');
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.newPassword, 10);
+
+    await this.userRepo.updatePassword(user.id, hashedPassword);
+
+    return successResponse('Password changed successfully', null);
   }
-
-
-
-
-
-
-
 }
